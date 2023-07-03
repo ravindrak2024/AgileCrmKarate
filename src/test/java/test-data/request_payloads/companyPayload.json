@@ -1,0 +1,12 @@
+{
+  "type": "COMPANY",
+  "properties": [{
+    "type": "SYSTEM",
+    "name": "name",
+    "value": "#(random_data.companyName)"
+  }, {
+    "type": "SYSTEM",
+    "name": "url",
+    "value": "#(random_data.companyUrl)"
+  }]
+}

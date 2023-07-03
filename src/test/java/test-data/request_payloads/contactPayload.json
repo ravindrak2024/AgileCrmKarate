@@ -1,0 +1,26 @@
+{
+  "type": "PERSON",
+  "source": "manual",
+  "contact_company_id": null,
+  "tags": ["manager","team_lead"],
+  "tagsWithTime": [{
+    "tag": "leader"
+  }],
+  "properties": [{
+    "type": "SYSTEM",
+    "name": "first_name",
+    "value": "#(random_data.contactFirstName)"
+  }, {
+    "type": "SYSTEM",
+    "name": "last_name",
+    "value": "#(random_data.contactLastName)"
+  }, {
+    "type": "SYSTEM",
+    "name": "email",
+    "value": "#(random_data.contactEmailId)"
+  }, {
+    "type": "SYSTEM",
+    "name": "title",
+    "value": "#(random_data.contactTitle)"
+  }]
+}

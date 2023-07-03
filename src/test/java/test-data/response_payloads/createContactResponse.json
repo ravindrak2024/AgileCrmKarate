@@ -1,0 +1,73 @@
+{
+  "updated_time": "#number",
+  "browserId": [
+  ],
+  "unsubscribeStatus": [
+  ],
+  "viewed_time": "#number",
+  "last_campaign_emaild": "#number",
+  "source": "manual",
+  "is_lead_converted": "#boolean",
+  "type": "PERSON",
+  "last_emailed": "#number",
+  "tagsWithTime": "#ignore",
+  "viewed": {
+    "viewed_time": "#number"
+  },
+  "campaignStatus": [
+  ],
+  "restored_time": "#number",
+  "emailBounceStatus": [
+  ],
+  "id": "#number",
+  "is_client_import": "#boolean",
+  "concurrent_save_allowed": "#boolean",
+  "formId": 0,
+  "owner": {
+    "phone": "",
+    "domain": "ravikarate",
+    "name": "ravindra",
+    "calendarURL": "#string",
+    "id": "#number",
+    "pic": "#string",
+    "schedule_id": "#string",
+    "email": "#string",
+    "calendar_url": "#string"
+  },
+  "created_time": "#number",
+  "lead_status_id": "#number",
+  "star_value": "#number",
+  "is_duplicate_existed": "#boolean",
+  "tags": "#ignore",
+  "lead_source_id": "#number",
+  "last_contacted": "#number",
+  "lead_score": "#number",
+  "entity_type": "#string",
+  "lead_converted_time": "#number",
+  "is_duplicate_verification_failed": "#boolean",
+  "last_called": "#number",
+  "trashed_time": "#number",
+  "klout_score": "",
+  "properties": [
+    {
+      "name": "first_name",
+      "type": "SYSTEM",
+      "value": "#string"
+    },
+    {
+      "name": "last_name",
+      "type": "SYSTEM",
+      "value": "#string"
+    },
+    {
+      "name": "email",
+      "type": "SYSTEM",
+      "value": "#string"
+    },
+    {
+      "name": "title",
+      "type": "SYSTEM",
+      "value": "#string"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id" :"#number",
+  "updated_time": "#number",
+  "browserId": [],
+  "unsubscribeStatus": [],
+  "viewed_time": 0,
+  "last_campaign_emaild": 0,
+  "source": "api",
+  "is_lead_converted": "#boolean",
+  "type": "COMPANY",
+  "last_emailed": 0,
+  "tagsWithTime": [],
+  "viewed": {
+    "viewed_time": 0
+  },
+  "campaignStatus": [],
+  "restored_time": 0,
+  "emailBounceStatus": [],
+  "is_client_import": "#boolean",
+  "concurrent_save_allowed": "#boolean",
+  "formId": 0,
+  "owner": {
+    "phone": "",
+    "domain": "ravikarate",
+    "name": "ravindra",
+    "calendarURL": "https://ravikarate.agilecrm.com/calendar/ravindra",
+    "id": "#number",
+    "pic": "#ignore",
+    "schedule_id": "ravindra",
+    "email": "ravikarate@yopmail.com",
+    "calendar_url": "#ignore"
+  },
+  "created_time": "#ignore",
+  "lead_status_id": 0,
+  "star_value": 0,
+  "responsePayload": "#ignore",
+  "is_duplicate_existed": false,
+  "tags": [],
+  "lead_source_id": 0,
+  "last_contacted": 0,
+  "lead_score": 0,
+  "entity_type": "company_entity",
+  "lead_converted_time": 0,
+  "is_duplicate_verification_failed": false,
+  "last_called": 0,
+  "trashed_time": 0,
+  "klout_score": "",
+  "properties": [{
+    "name": "name",
+    "type": "SYSTEM",
+    "value": "#string"
+  },
+    {
+      "name": "url",
+      "type": "SYSTEM",
+      "value": "#string"
+    },
+    {
+      "name": "name_lower",
+      "type": "SYSTEM",
+      "value": "#string"
+    }
+  ]
+}
