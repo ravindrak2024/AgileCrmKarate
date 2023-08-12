@@ -63,3 +63,34 @@ Feature: Create and get Contact
     When method put
     Then status 200
     * match response.lead_score == 10
+
+  Scenario: Delete the tag of the contact
+    Given path apiConstant.create_contact
+    * print random_data.contactEmailId
+    And request payload
+    When method post
+    Then status 200
+    * def contactId = response.id
+    When path apiConstant.delete_tag_by_id
+    * def createdContact = response
+    And request createdContact
+    When method put
+    Then status 200
+    * def apiPath = apiConstant.get_contacts_by_id
+    * replace apiPath.${id} = contactId
+    When path apiPath
+    When method get
+    Then status 200
+    * match response.tags == []
+
+  Scenario: Search contact by email_id
+    Given path apiConstant.create_contact
+    * print random_data.contactEmailId
+    And request payload
+    When method post
+    Then status 200
+    * def emailId = random_data.contactEmailId
+    * def apiPath = apiConstant.search_contact_by_email
+    * replace apiPath.${emailId} = emailId
+
+

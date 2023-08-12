@@ -34,4 +34,4 @@ Feature: Saves api constants
     * def update_tag_by_id = '/'+apiEnvPath+'/api/contacts/edit/tags'
     * def delete_tag_by_id = '/'+apiEnvPath+'/api/contacts/delete/tags'
     * def delete_contact = '/'+apiEnvPath+'/api/contacts/${id}'
-    * def search_contact_by_email = '/'+apiEnvPath+'/api/contacts/search/email'
+    * def search_contact_by_email = '/'+apiEnvPath+'/api/contacts/search/email/${emailId}'

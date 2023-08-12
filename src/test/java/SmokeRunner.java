@@ -20,6 +20,7 @@ public class SmokeRunner {
     //return Karate.run("classpath:scripts/company").tags("@smoke").relativeTo(getClass()).parallel(2);
   }
 
+
 //  @Karate.Test
 //  Karate testSample() {
 //    return Karate.run("classpath:AllFeatures/Users").relativeTo(getClass());

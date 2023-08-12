@@ -9,13 +9,16 @@ group 'org.example'
 version '1.0-SNAPSHOT'
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-    testImplementation "com.intuit.karate:karate-junit5:${karateVersion}"
+    implementation "com.intuit.karate:karate-junit5:${karateVersion}"
+    testImplementation 'com.microsoft.playwright:playwright:1.28.1'
+
 }
 
 sourceSets {
