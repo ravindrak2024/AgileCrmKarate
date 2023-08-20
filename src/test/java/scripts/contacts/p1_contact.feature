@@ -24,15 +24,23 @@ Feature: Create and get Contact
     * def expectedResponse = read(RESPONSE_PAYLOAD_PATH+'/createContactResponse.json')
     * match response == expectedResponse
 
-  Scenario: Create a contact with invalid details
+
+  Scenario Outline: Create a contact with invalid details __row
     Given path apiConstant.create_contact
-    * set payload.properties[?(@.name=='first_name')].value = null
-    * set payload.properties[?(@.name=='last_name')].value = null
-    * set payload.properties[?(@.name=='email')].value = null
-    * set payload.properties[?(@.name=='title')].value = null
+    * set payload.properties[?(@.name=='first_name')].value = <first_name>
+    * set payload.properties[?(@.name=='last_name')].value = <last_name>
+    * set payload.properties[?(@.name=='email')].value = <email>
+    * set payload.properties[?(@.name=='title')].value = <title>
     And request payload
     When method post
-    Then status 500
+    Then status <statusCode>
+
+    Examples:
+      | first_name   | last_name    | email | title         |statusCode |
+      | null         | null         | null  | null          | 500       |
+      | null         | null         | null  | 'Sr Manager'  | 500       |
+      | null         | 'shah'       | null  | 'Sr Manager'  | 500       |
+      | 'amit'       | 'shah'       | null  | 'Sr Manager'  | 500       |
 
   Scenario: Update contact and validate
     Given path apiConstant.create_contact
@@ -40,29 +48,52 @@ Feature: Create and get Contact
     And request payload
     When method post
     Then status 200
-    * def first_name = 'ravindra'
-    * def last_name = 'kadagoudar'
-    * set response.properties[?(@.name=='first_name')].value = first_name
-    * set response.properties[?(@.name=='last_name')].value = last_name
+    * def update_contactId = response.id
+    * def update_fname = 'ravindra'
+    * def update_lname = 'kadagoudar'
+    * def update_email = 'abc@yopmail.com'
+    * def updatePayload = read(REQUEST_PAYLOAD_PATH+'/updateContactPayload.json')
     Given path apiConstant.update_contact
-    And request response
+    And request updatePayload
     When method put
     Then status 200
-    * match response.properties[?(@.name=='first_name')].value contains first_name
-    * match response.properties[?(@.name=='last_name')].value contains last_name
+    * match response.properties[?(@.name=='first_name')].value contains update_fname
+    * match response.properties[?(@.name=='last_name')].value contains update_lname
 
-  Scenario: Update lead score of contact By id
+
+  Scenario Outline: Update contact with invalid details and validate
+    Given path apiConstant.update_contact
+    * def updatePayload = read(REQUEST_PAYLOAD_PATH+'/updateContactPayload.json')
+    And request updatePayload
+    When method put
+    Then status <statusCode>
+    * print response
+    * assert response.contains(<message>)
+    Examples:
+      | update_contactId   | update_fname   | update_lname     | update_email            |statusCode | message                                     |
+      | 98792552           | 'amit'         | 'shinde'         | 'amit@yopmail.com'      | 400       | 'Contact is not availabe for given id.'     |
+      |                    | 'amit'         | 'shinde'         | 'amit@yopmail.com'      | 400       | 'Please check id value should not be null.' |
+
+  @smokex
+  Scenario Outline: Update lead score of contact By id
     Given path apiConstant.create_contact
     * print random_data.contactEmailId
     And request payload
     When method post
     Then status 200
-    * set response.lead_score = 10
+    * def leadScore_contactId = response.id
+    * def leadScorePayload = __row
+    * set leadScorePayload.id = leadScore_contactId
+    * print leadScorePayload
     Given path apiConstant.update_lead_score
-    And request response
+    And request leadScorePayload
     When method put
     Then status 200
-    * match response.lead_score == 10
+    * match response.lead_score == leadScorePayload.lead_score
+    Examples:
+    |id                      |lead_score! |
+    | #(leadScore_contactId) |20          |
+    | #(leadScore_contactId) |30          |
 
   Scenario: Delete the tag of the contact
     Given path apiConstant.create_contact
@@ -70,14 +101,22 @@ Feature: Create and get Contact
     And request payload
     When method post
     Then status 200
-    * def contactId = response.id
+    * def deleteTagBy_contactId = response.id
+    * def tagsPresent = response.tags
+    * def deleteBytagPayload =
+    """
+    {
+    "id": "#(deleteTagBy_contactId)",
+    "tags": #(tagsPresent)
+    }
+    """
     When path apiConstant.delete_tag_by_id
     * def createdContact = response
-    And request createdContact
+    And request deleteBytagPayload
     When method put
     Then status 200
     * def apiPath = apiConstant.get_contacts_by_id
-    * replace apiPath.${id} = contactId
+    * replace apiPath.${id} = deleteTagBy_contactId
     When path apiPath
     When method get
     Then status 200
@@ -92,5 +131,15 @@ Feature: Create and get Contact
     * def emailId = random_data.contactEmailId
     * def apiPath = apiConstant.search_contact_by_email
     * replace apiPath.${emailId} = emailId
+
+  Scenario: Get all contacts and validate the size
+    Given path apiConstant.create_contact
+    * print random_data.contactEmailId
+    And request payload
+    When method post
+    Then status 200
+    * def contactId = response.id
+    * def result = call read('classpath:scripts/commons/all_contacts.feature')
+    * assert result.allcontacts.length > 0
 
 

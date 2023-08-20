@@ -29,7 +29,7 @@ Feature: Saves api constants
     * def get_contacts = '/'+apiEnvPath+'/api/contacts'
     * def get_contacts_by_id = '/'+apiEnvPath+'/api/contacts/${id}'
     * def create_contact = '/'+apiEnvPath+'/api/contacts'
-    * def update_contact = '/'+apiEnvPath+'/api/contacts'
+    * def update_contact = '/'+apiEnvPath+'/api/contacts/edit-properties'
     * def update_lead_score = '/'+apiEnvPath+'/api/contacts/edit/lead-score'
     * def update_tag_by_id = '/'+apiEnvPath+'/api/contacts/edit/tags'
     * def delete_tag_by_id = '/'+apiEnvPath+'/api/contacts/delete/tags'

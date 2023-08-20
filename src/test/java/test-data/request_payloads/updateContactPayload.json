@@ -1,0 +1,26 @@
+{
+  "id": "##(update_contactId)",
+  "properties": [
+    {
+      "type": "SYSTEM",
+      "name": "first_name",
+      "value": "#(update_fname)"
+    },
+    {
+      "type": "SYSTEM",
+      "name": "last_name",
+      "value": "#(update_lname)"
+    },
+    {
+      "type": "SYSTEM",
+      "name": "email",
+      "subtype": "work",
+      "value": "#(update_email)"
+    },
+    {
+      "type": "SYSTEM",
+      "name": "address",
+      "value": "{\"address\":\"225 George Street\",\"city\":\"NSW\",\"state\":\"Sydney\",\"zip\":\"2000\",\"country\":\"Australia\"}"
+    }
+  ]
+}
