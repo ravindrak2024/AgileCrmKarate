@@ -8,15 +8,19 @@ Feature: Create and get Company
     * configure headers = rawHeader('BasicAuth')
     * def apiConstant = call read(COMMONS_PATH+'/company_api_constants.feature')
     * def random_data = call read(COMMONS_PATH+'/random_data.feature')
-    * configure afterFeature = call read(COMMONS_CLEANUP_PATH+'/cleanUp.js')
-    * def payload = read(REQUEST_PAYLOAD_PATH+'/companyPayload.json')
+    * def createCompany = call read(COMMONS_CLEANUP_PATH+'/createCompany.js')
+    * def companyId = createCompany.companyId
+    * def companyName = createCompany.companyName
+    * def companyResponse = createCompany.companyResponse
+    * def deleteCompany = read(COMMONS_CLEANUP_PATH+'/cleanUp.js')
+    * configure afterScenario =
+    """
+    function(){
+      deleteCompany(companyId)
+    }
+    """
 
   Scenario: create and get all company
-    Given path apiConstant.create_company
-    And request payload
-    When method post
-    Then status 200
-    * def companyId = karate.jsonPath(response,'$.id')
     * def apiPath = apiConstant.get_company
     * replace apiPath.${id} = companyId
     Given path apiPath
@@ -25,20 +29,15 @@ Feature: Create and get Company
     * print myVarName
     * def expectedResponse = read(RESPONSE_PAYLOAD_PATH+'/createCompanyResponse.json')
     * match response == expectedResponse
-    * match response.properties[?(@.name=='name')].value contains random_data.companyName
+    * match response.properties[?(@.name=='name')].value contains companyName
 
   Scenario: Update an existing company.
-    Given path apiConstant.create_company
-    And request payload
-    When method post
-    Then status 200
-    * def companyId = karate.jsonPath(response,'$.id')
     * def updatedCompanyName = 'Persistent Systems'
     * def updatedCompanyUrl = 'https://www.persistentsystems.com'
-    * set response.properties[?(@.name=='name')].value = updatedCompanyName
-    * set response.properties[?(@.name=='url')].value = updatedCompanyUrl
+    * set companyResponse.properties[?(@.name=='name')].value = updatedCompanyName
+    * set companyResponse.properties[?(@.name=='url')].value = updatedCompanyUrl
     Given path apiConstant.update_company
-    And request response
+    And request companyResponse
     When method put
     Then status 200
     * def expectedResponse = read(RESPONSE_PAYLOAD_PATH+'/createCompanyResponse.json')

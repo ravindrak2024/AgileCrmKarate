@@ -10,19 +10,18 @@ Feature: Create and get Contact
     * configure headers = rawHeader('BasicAuth')
     * def apiConstant = call read(COMMONS_PATH+'/company_api_constants.feature')
     * def random_data = call read(COMMONS_PATH+'/random_data.feature')
-    * configure afterFeature = call read(COMMONS_CLEANUP_PATH+'/contactCleanup.js')
+    * def contact = call read(COMMONS_PATH+'/create_contact.feature')
+    * def contactId = contact.contactId
+    * def contactResponse = contact.contactResponse
+    * def contactEmailId = contact.emailId
+    * def deleteContact = read(COMMONS_CLEANUP_PATH+'/contactCleanup.js')
+    * configure afterScenario =
+    """
+    function(){
+      deleteContact(contactId)
+    }
+    """
     * def payload = read(REQUEST_PAYLOAD_PATH+'/contactPayload.json')
-
-  Scenario: Create a contact
-    Given path apiConstant.create_contact
-    * print random_data.contactEmailId
-    And request payload
-    When method post
-    Then status 200
-    * match response.properties[?(@.name=='first_name')].value contains random_data.contactFirstName
-    * print response
-    * def expectedResponse = read(RESPONSE_PAYLOAD_PATH+'/createContactResponse.json')
-    * match response == expectedResponse
 
 
   Scenario Outline: Create a contact with invalid details __row
@@ -43,12 +42,7 @@ Feature: Create and get Contact
       | 'amit'       | 'shah'       | null  | 'Sr Manager'  | 500       |
 
   Scenario: Update contact and validate
-    Given path apiConstant.create_contact
-    * print random_data.contactEmailId
-    And request payload
-    When method post
-    Then status 200
-    * def update_contactId = response.id
+    * def update_contactId = contactResponse.id
     * def update_fname = 'ravindra'
     * def update_lname = 'kadagoudar'
     * def update_email = 'abc@yopmail.com'
@@ -74,44 +68,18 @@ Feature: Create and get Contact
       | 98792552           | 'amit'         | 'shinde'         | 'amit@yopmail.com'      | 400       | 'Contact is not availabe for given id.'     |
       |                    | 'amit'         | 'shinde'         | 'amit@yopmail.com'      | 400       | 'Please check id value should not be null.' |
 
-  @smokex
-  Scenario Outline: Update lead score of contact By id
-    Given path apiConstant.create_contact
-    * print random_data.contactEmailId
-    And request payload
-    When method post
-    Then status 200
-    * def leadScore_contactId = response.id
-    * def leadScorePayload = __row
-    * set leadScorePayload.id = leadScore_contactId
-    * print leadScorePayload
-    Given path apiConstant.update_lead_score
-    And request leadScorePayload
-    When method put
-    Then status 200
-    * match response.lead_score == leadScorePayload.lead_score
-    Examples:
-    |id                      |lead_score! |
-    | #(leadScore_contactId) |20          |
-    | #(leadScore_contactId) |30          |
-
   Scenario: Delete the tag of the contact
-    Given path apiConstant.create_contact
-    * print random_data.contactEmailId
-    And request payload
-    When method post
-    Then status 200
-    * def deleteTagBy_contactId = response.id
-    * def tagsPresent = response.tags
+    * def deleteTagBy_contactId = contactResponse.id
+    * def tagsPresent = contactResponse.tags
     * def deleteBytagPayload =
     """
     {
     "id": "#(deleteTagBy_contactId)",
-    "tags": #(tagsPresent)
+    "tags": '#(tagsPresent)'
     }
     """
     When path apiConstant.delete_tag_by_id
-    * def createdContact = response
+    * def createdContact = contactResponse
     And request deleteBytagPayload
     When method put
     Then status 200
@@ -123,23 +91,14 @@ Feature: Create and get Contact
     * match response.tags == []
 
   Scenario: Search contact by email_id
-    Given path apiConstant.create_contact
-    * print random_data.contactEmailId
-    And request payload
-    When method post
-    Then status 200
-    * def emailId = random_data.contactEmailId
     * def apiPath = apiConstant.search_contact_by_email
-    * replace apiPath.${emailId} = emailId
+    * replace apiPath.${emailId} = contactEmailId
+    When path apiPath
+    And method get
+    Then status 200
+    * match response.id == contactId
 
   Scenario: Get all contacts and validate the size
-    Given path apiConstant.create_contact
-    * print random_data.contactEmailId
-    And request payload
-    When method post
-    Then status 200
-    * def contactId = response.id
+    * def contactId = contactResponse.id
     * def result = call read('classpath:scripts/commons/all_contacts.feature')
     * assert result.allcontacts.length > 0
-
-

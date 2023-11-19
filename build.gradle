@@ -3,7 +3,7 @@ plugins {
 }
 
 ext {
-    karateVersion = '1.0.0'
+    karateVersion = '1.4.1'
 }
 group 'org.example'
 version '1.0-SNAPSHOT'

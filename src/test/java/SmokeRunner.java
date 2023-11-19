@@ -11,7 +11,7 @@ public class SmokeRunner {
   public void testSmoke() {
 
     Results results = Runner.path(
-            "classpath:scripts/contacts"
+            "classpath:scripts/contacts","classpath:scripts/company"
     ).parallel(4);
 
 

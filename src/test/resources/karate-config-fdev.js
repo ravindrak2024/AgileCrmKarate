@@ -10,8 +10,5 @@ function fn() {
         password: 'Ravi@123',
         apiPassKey: 'qbamrbmr0578ju22h21loqbv77'
     }
-
-
-
     return config;
 }
